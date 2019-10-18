@@ -17,9 +17,10 @@ package com.agritsik.patterns.cor;
  https://refactoring.guru/design-patterns/chain-of-responsibility
  https://en.wikipedia.org/wiki/Chain-of-responsibility_pattern#Java_example
 
- Related Patterns: Composite, Command, Decorator
+ Related Patterns:
+ Composite, Command, Decorator
 
- The chain-of-responsibility pattern is structurally nearly identical to the decorator pattern, the difference
+ - The chain-of-responsibility pattern is structurally nearly identical to the decorator pattern, the difference
  being that for the decorator, all classes handle the request, while for the chain of responsibility, exactly
  one of the classes in the chain handles the request.
 
