@@ -1,28 +1,26 @@
 package com.agritsik.patterns.cor;
 
 /*
+
  Chain of Responsibility is a behavioral design pattern that lets you pass requests along a chain of handlers.
  Upon receiving a request, each next decides either to process the request or to pass it to the next next
  in the chain.
 
  Solution:
- - The Chain of Responsibility relies on transforming particular behaviors into stand-alone objects called handlers.
- - Each check should be extracted to its own class with a single method that performs the check.
- - The request, along with its data, is passed to this method as an argument.
- - The pattern suggests that you link these handlers into a chain.
- - The request travels along the chain until all handlers have had a chance to process it.
- - A next can decide not to pass the request further down the chain
+  - The Chain of Responsibility relies on transforming particular behaviors into stand-alone objects called handlers.
+  - Each check should be extracted to its own class with a single method that performs the check.
+  - The request, along with its data, is passed to this method as an argument.
+  - The pattern suggests that you link these handlers into a chain.
+  - The request travels along the chain until all handlers have had a chance to process it.
+  - A next can decide not to pass the request further down the chain
+
+ When:
+  - Use the Chain of Responsibility pattern when your program is expected to process different kinds of requests
+  in various ways, but the exact types of requests and their sequences are unknown beforehand.
 
  Links:
- https://refactoring.guru/design-patterns/chain-of-responsibility
- https://en.wikipedia.org/wiki/Chain-of-responsibility_pattern#Java_example
-
- Related Patterns:
- Composite, Command, Decorator
-
- - The chain-of-responsibility pattern is structurally nearly identical to the decorator pattern, the difference
- being that for the decorator, all classes handle the request, while for the chain of responsibility, exactly
- one of the classes in the chain handles the request.
+  - https://en.wikipedia.org/wiki/Chain-of-responsibility_pattern
+  - https://refactoring.guru/design-patterns/chain-of-responsibility
 
  */
 public class ChainOfResponsibility {
@@ -37,6 +35,11 @@ public class ChainOfResponsibility {
     }
 }
 
+/**
+ * The Handler defines a field for storing a reference to the next handler.
+ * The clients can build a chain by passing a handler to the constructor
+ * or setter of the previous handler.
+ */
 abstract class Handler {
     private Handler next;
 
