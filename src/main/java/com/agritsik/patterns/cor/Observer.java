@@ -6,10 +6,10 @@ import java.util.List;
 
 public class Observer {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
 
         MyPublisher<String> myPublisher = new MyPublisher<>();
-        myPublisher.register(List.of(new FirstSubscriber(), new SecondSubscriber()));
+        myPublisher.register(new FirstSubscriber(), new SecondSubscriber());
 
         myPublisher.publish("message1");
         myPublisher.publish("message2");
@@ -24,14 +24,10 @@ public class Observer {
  */
 class MyPublisher<T> {
 
-    private List<Subscriber<T>> subscribers;
+    private List<Subscriber<T>> subscribers = new ArrayList<>();
 
-    public MyPublisher() {
-        this.subscribers = new ArrayList<>();
-    }
-
-    void register(List<Subscriber<T>> subscribers) {
-        this.subscribers = subscribers;
+    void register(Subscriber<T>... subscribers) {
+        this.subscribers.addAll(List.of(subscribers));
     }
 
     void register(Subscriber<T> subscriber) {
