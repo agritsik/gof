@@ -9,52 +9,61 @@ public class Observer {
     public static void main(String[] args) throws InterruptedException {
 
         MyPublisher<String> myPublisher = new MyPublisher<>();
-        myPublisher.register(new FirstTracker());
-        myPublisher.register(new SecondTracker());
+        myPublisher.register(List.of(new FirstSubscriber(), new SecondSubscriber()));
 
         myPublisher.publish("message1");
         myPublisher.publish("message2");
+        myPublisher.publish("message3");
     }
 }
 
-
+/**
+ * Publishes the event to all registered subscribers
+ *
+ * @param <T> the type of the event
+ */
 class MyPublisher<T> {
 
-    private List<RankingTracker<T>> trackers;
+    private List<Subscriber<T>> subscribers;
 
     public MyPublisher() {
-        this.trackers = new ArrayList<>();
+        this.subscribers = new ArrayList<>();
     }
 
-    void register(RankingTracker<T> tracker) {
-        trackers.add(tracker);
+    void register(List<Subscriber<T>> subscribers) {
+        this.subscribers = subscribers;
+    }
+
+    void register(Subscriber<T> subscriber) {
+        subscribers.add(subscriber);
     }
 
     void publish(T event) {
-        trackers.forEach(t -> t.track(event));
+        subscribers.forEach(t -> t.onNext(event));
     }
 
 }
 
-interface RankingTracker<T> {
-    void track(T event);
+/**
+ * Subscribes to events
+ *
+ * @param <T> the type of the event
+ */
+interface Subscriber<T> {
+    void onNext(T event);
 }
 
-
-class SecondTracker implements RankingTracker<String> {
-
-    public void track(String req) {
-        System.out.println("SecondTracker: " + req);
+class FirstSubscriber implements Subscriber<String> {
+    @Override
+    public void onNext(String req) {
+        System.out.println("FirstSubscriber: " + req);
     }
-
-
 }
 
-class FirstTracker implements RankingTracker<String> {
-
-    public void track(String req) {
-        System.out.println("FirstTracker: " + req);
+class SecondSubscriber implements Subscriber<String> {
+    @Override
+    public void onNext(String req) {
+        System.out.println("SecondSubscriber: " + req);
     }
-
 }
 

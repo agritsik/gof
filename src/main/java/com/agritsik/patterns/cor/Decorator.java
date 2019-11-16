@@ -3,6 +3,11 @@ package com.agritsik.patterns.cor;
 
 //import com.sun.xml.internal.messaging.saaj.util.Base64;
 
+import com.google.common.base.Charsets;
+
+import java.util.Base64;
+import java.util.Set;
+
 /*
 
  Decorator is a structural design pattern that lets you attach new behaviors to objects by placing these objects
@@ -26,15 +31,26 @@ package com.agritsik.patterns.cor;
 public class Decorator {
 
     public static void main(String[] args) {
-        DataSourceDecorator dataSource = new EncoderDataSourceDecorator(new FileDataSource());
-        System.out.println(dataSource.read());
+        Set<String> arguments = Set.of(args);
+
+        Reader source = new FileReader();
+
+        if (arguments.contains("--decode")) {
+            source = new EncoderReaderDecorator(source);
+        }
+
+        if (arguments.contains("--uppercase")) {
+            source = new UppercaseReaderDecorator(source);
+        }
+
+        System.out.println(source.read());
     }
 }
 
 /**
  * The Component Interface declares the common interface for both wrappers and wrapped objects.
  */
-interface DataSource {
+interface Reader {
     String read();
 }
 
@@ -42,24 +58,24 @@ interface DataSource {
  * The Concrete Component is a class of objects being wrapped.
  * It defines the basic behavior, which can be altered by decorators.
  */
-class FileDataSource implements DataSource {
+class FileReader implements Reader {
     public String read() {
-        return "text from file";
+        return "aGVsbG8gd29ybGQh";
     }
 }
 
 /**
  * Abstract Decorator delegates all operations to the wrapped object.
  */
-abstract class DataSourceDecorator implements DataSource {
-    private DataSource wrappee;
+abstract class ReaderDecorator implements Reader {
+    private Reader target;
 
-    public DataSourceDecorator(DataSource wrappee) {
-        this.wrappee = wrappee;
+    public ReaderDecorator(Reader target) {
+        this.target = target;
     }
 
     public String read() {
-        return wrappee.read(); // delegate to wrappee
+        return target.read();
     }
 }
 
@@ -67,19 +83,26 @@ abstract class DataSourceDecorator implements DataSource {
  * Concrete Decorator overrides methods of the base decorator and
  * execute their behavior either before or after calling the parent method.
  */
-class EncoderDataSourceDecorator extends DataSourceDecorator {
-
-    public EncoderDataSourceDecorator(DataSource wrapee) {
-        super(wrapee);
+class EncoderReaderDecorator extends ReaderDecorator {
+    public EncoderReaderDecorator(Reader target) {
+        super(target);
     }
 
     @Override
     public String read() {
-        return decode(super.read());
+        byte[] bytes = super.read().getBytes(Charsets.UTF_8);
+        return new String(Base64.getDecoder().decode(bytes));
+    }
+}
+
+class UppercaseReaderDecorator extends ReaderDecorator {
+    public UppercaseReaderDecorator(Reader target) {
+        super(target);
     }
 
-    private String decode(String read) {
-        return read;
+    @Override
+    public String read() {
+        return super.read().toUpperCase();
     }
 }
 
