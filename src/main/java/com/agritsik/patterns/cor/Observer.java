@@ -8,12 +8,12 @@ public class Observer {
 
     public static void main(String[] args) {
 
-        MyPublisher<String> myPublisher = new MyPublisher<>();
-        myPublisher.register(new FirstSubscriber(), new SecondSubscriber());
+        Publisher<String> publisher = new Publisher<>();
+        publisher.register(new FirstSubscriber(), new SecondSubscriber());
 
-        myPublisher.publish("message1");
-        myPublisher.publish("message2");
-        myPublisher.publish("message3");
+        publisher.publish("message1");
+        publisher.publish("message2");
+        publisher.publish("message3");
     }
 }
 
@@ -22,7 +22,7 @@ public class Observer {
  *
  * @param <T> the type of the event
  */
-class MyPublisher<T> {
+class Publisher<T> {
 
     private List<Subscriber<T>> subscribers = new ArrayList<>();
 
