@@ -6,17 +6,12 @@ package com.agritsik.patterns.cor;
  Upon receiving a request, each next decides either to process the request or to pass it to the next next
  in the chain.
 
- Solution:
+ Details:
   - The Chain of Responsibility relies on transforming particular behaviors into stand-alone objects called handlers.
-  - Each check should be extracted to its own class with a single method that performs the check.
-  - The request, along with its data, is passed to this method as an argument.
-  - The pattern suggests that you link these handlers into a chain.
-  - The request travels along the chain until all handlers have had a chance to process it.
-  - A next can decide not to pass the request further down the chain
-
- When:
+    The pattern suggests that you link these handlers into a chain. The request travels along the chain until all
+    handlers have had a chance to process it. A next can decide not to pass the request further down the chain
   - Use the Chain of Responsibility pattern when your program is expected to process different kinds of requests
-  in various ways, but the exact types of requests and their sequences are unknown beforehand.
+    in various ways, but the exact types of requests and their sequences are unknown beforehand.
 
  Links:
   - https://en.wikipedia.org/wiki/Chain-of-responsibility_pattern

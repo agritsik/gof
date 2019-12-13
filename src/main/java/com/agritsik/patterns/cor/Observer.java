@@ -30,10 +30,6 @@ class Publisher<T> {
         this.subscribers.addAll(List.of(subscribers));
     }
 
-    void register(Subscriber<T> subscriber) {
-        subscribers.add(subscriber);
-    }
-
     void publish(T event) {
         subscribers.forEach(t -> t.onNext(event));
     }
